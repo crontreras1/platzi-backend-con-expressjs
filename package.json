@@ -10,11 +10,14 @@
     "url": "git+https://github.com/crontreras1/platzi-backend-con-expressjs.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Cristian Contreras",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/crontreras1/platzi-backend-con-expressjs/issues"
   },
   "homepage": "https://github.com/crontreras1/platzi-backend-con-expressjs#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
 }
