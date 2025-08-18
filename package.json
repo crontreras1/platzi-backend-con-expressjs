@@ -11,13 +11,14 @@
   },
   "keywords": [],
   "author": "Cristian Contreras",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/crontreras1/platzi-backend-con-expressjs/issues"
   },
   "homepage": "https://github.com/crontreras1/platzi-backend-con-expressjs#readme",
-  "description": "",
+  "description": "Curso de Platzi Backend con Node.js",
   "dependencies": {
     "express": "^5.1.0"
-  }
+  },
+  "devDependencies": {}
 }
