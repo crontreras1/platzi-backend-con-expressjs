@@ -1,0 +1,20 @@
+{
+  "name": "backend-con-expressjs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crontreras1/platzi-backend-con-expressjs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/crontreras1/platzi-backend-con-expressjs/issues"
+  },
+  "homepage": "https://github.com/crontreras1/platzi-backend-con-expressjs#readme",
+  "description": ""
+}
