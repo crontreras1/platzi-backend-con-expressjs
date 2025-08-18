@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "dev": "node --watch app.js",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,7 +20,7 @@
   "homepage": "https://github.com/crontreras1/platzi-backend-con-expressjs#readme",
   "description": "Curso de Platzi Backend con Node.js",
   "dependencies": {
+    "dotenv": "^17.2.1",
     "express": "^5.1.0"
-  },
-  "devDependencies": {}
+  }
 }
