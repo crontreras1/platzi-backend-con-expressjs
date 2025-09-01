@@ -35,6 +35,32 @@ app.get('/search', (req, res) => {
   `);
 });
 
+app.post('/form', (req, res) => {
+  const name = req.body.name || 'Sin nombre'; 
+  const email = req.body.email || 'No proporcionado';
+
+  res.json({
+    message: 'Datos recibidos',
+    data: {
+      name,
+      email
+    }
+  });
+});
+
+app.post('/api/data', (req, res) => {
+  const data = req.body;
+
+  if(!data || Object.keys(data).length === 0) {
+    return res.status(400).json({ error: 'No se recibiron datos' });
+  };
+
+  res.status(201).json({
+    message: 'Datos JSON recibidos',
+    data
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Servidor: http://localhost:${ PORT }`); 
 }); 
