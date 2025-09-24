@@ -2,8 +2,11 @@ require('dotenv').config();
 const express = require('express');
 // const bodyParser = require('body-parser');
 
+const { validateUser } = require('./utils/validation');
+
 const fs = require('fs');
 const path = require('path');
+const { error } = require('console');
 const usersFilePath = path.join(__dirname, 'users.json');
 
 const app = express(); 
@@ -11,7 +14,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 3000;
-// console.log(PORT)
 
 app.get('/', (req, res) => {
   res.send(`
@@ -85,6 +87,12 @@ app.post('/users', (req, res) => {
     };
 
     const users = JSON.parse(data);
+
+    const validation = validateUser(newUser, users);
+    if (!validation.isValid) {
+      return res.status(400).json({ error: validation.error });
+    };
+
     users.push(newUser); 
 
     fs.writeFile(usersFilePath, JSON.stringify(users, null, 2), err => {
@@ -107,6 +115,12 @@ app.put('/users/:id', (req, res) => {
     }; 
     
     let users = JSON.parse(data); 
+
+    const validation = validateUser(updatedUser, users);
+    if (!validation.isValid) {
+      return res.status(400).json({ error: validation.error });
+    };
+
     users = users.map(user => user.id === userId ? {...user, ...updatedUser} : user);
 
     fs.writeFile(usersFilePath, JSON.stringify(users, null, 2), err => {
