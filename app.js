@@ -68,7 +68,7 @@ app.post('/api/data', (req, res) => {
 });
 
 app.get('/users', (req, res) => {
-  fs.readFile(usersFilePath, 'utf-8', (err, data) => {
+  fs.readFile(usersFilePath, 'utf8', (err, data) => {
     if (err) {
       return res.status(500).json({ error: 'Error con conexión de datos' });
     };
@@ -81,7 +81,7 @@ app.get('/users', (req, res) => {
 app.post('/users', (req, res) => {
   const newUser = req.body; 
 
-  fs.readFile(usersFilePath, 'utf-8', (err, data) => {
+  fs.readFile(usersFilePath, 'utf8', (err, data) => {
     if (err) {
       return res.status(500).json({ error: 'Error en conexión de datos' });
     };
@@ -129,6 +129,27 @@ app.put('/users/:id', (req, res) => {
       };
 
       res.json(updatedUser);
+    });
+  });
+});
+
+app.delete('/users/:id', (req, res) => {
+  const userId = parseInt(req.params.id, 10);
+
+  fs.readFile(usersFilePath, 'utf8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error con conexión de datos' });
+    };
+
+    let users = JSON.parse(data);
+    users = users.filter(user => user.id !== userId);
+
+    fs.writeFile(usersFilePath, JSON.stringify(users, null, 2), err => {
+      if (err) {
+        return res.status(500).json({ error: 'Error al eliminar usuario' });
+      }
+
+      res.status(204).send();
     });
   });
 });
