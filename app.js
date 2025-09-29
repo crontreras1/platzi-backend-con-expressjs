@@ -3,6 +3,7 @@ const express = require('express');
 // const bodyParser = require('body-parser');
 
 const loggerMiddleware = require('./middlewares/logger'); 
+const errorHandler = require('./middlewares/errorHandler');
 const { validateUser } = require('./utils/validation');
 
 const fs = require('fs');
@@ -14,6 +15,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(loggerMiddleware);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 
@@ -155,6 +157,10 @@ app.delete('/users/:id', (req, res) => {
     });
   });
 });
+
+app.get('/error', (req, res, next) => {
+  next(new Error('Error intencional XO')); 
+})
 
 app.listen(PORT, () => {
   console.log(`Servidor: http://localhost:${ PORT }`); 
