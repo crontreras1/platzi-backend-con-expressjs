@@ -5,6 +5,7 @@ const express = require('express');
 const loggerMiddleware = require('./middlewares/logger'); 
 const errorHandler = require('./middlewares/errorHandler');
 const { validateUser } = require('./utils/validation');
+const authenticateToken = require('./middlewares/auth');
 
 const fs = require('fs');
 const path = require('path');
@@ -161,6 +162,10 @@ app.delete('/users/:id', (req, res) => {
 app.get('/error', (req, res, next) => {
   next(new Error('Error intencional XO')); 
 })
+
+app.get('/protected-route', authenticateToken, (req, res) => {
+  res,send('Esta es una ruta protegida');
+});
 
 app.listen(PORT, () => {
   console.log(`Servidor: http://localhost:${ PORT }`); 
