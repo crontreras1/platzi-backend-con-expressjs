@@ -1,5 +1,7 @@
 require('dotenv').config();
 const express = require('express');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 // const bodyParser = require('body-parser');
 
 const loggerMiddleware = require('./middlewares/logger'); 
@@ -18,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(loggerMiddleware);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 51214;
 
 app.get('/', (req, res) => {
   res.send(`
@@ -166,6 +168,15 @@ app.get('/error', (req, res, next) => {
 app.get('/protected-route', authenticateToken, (req, res) => {
   res,send('Esta es una ruta protegida');
 });
+
+app.get('/db-users', async (req, res) => {
+  try {
+    const users = await prisma.user.findMany();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al comunicarse con la Base de Datos' });
+  }
+})
 
 app.listen(PORT, () => {
   console.log(`Servidor: http://localhost:${ PORT }`); 
