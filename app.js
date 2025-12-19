@@ -168,7 +168,7 @@ app.get('/error', (req, res, next) => {
 })
 
 app.get('/protected-route', authenticateToken, (req, res) => {
-  res,send('Esta es una ruta protegida');
+  res.send('Esta es una ruta protegida');
 });
 
 app.get('/db-users', async (req, res) => {
@@ -194,6 +194,20 @@ app.post('/register', async (req, res) => {
   });
 
   res.status(201).json({ message: 'Usuario registrado exitosamente' });
+});
+
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) return res.status(400).json({ error: 'Email o contraseñas invalido' });
+  
+  const validPassword = await bcrypt.compare(password, user.password);
+  if (!validPassword) return res.status(400).json({ error: 'Email o contraseña invalidad' });
+
+  const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '4h' });
+
+  res.json({ token });
 });
 
 app.listen(PORT, () => {
