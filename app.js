@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 // const bodyParser = require('body-parser');
 
 const loggerMiddleware = require('./middlewares/logger'); 
@@ -177,6 +179,22 @@ app.get('/db-users', async (req, res) => {
     res.status(500).json({ error: 'Error al comunicarse con la Base de Datos' });
   }
 })
+
+app.post('/register', async (req, res) => {
+  const { email, password, name } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const newUser = await prisma.user.create({
+    data: {
+      email,
+      password: hashedPassword,
+      name,
+      role: 'USER'
+    }
+  });
+
+  res.status(201).json({ message: 'Usuario registrado exitosamente' });
+});
 
 app.listen(PORT, () => {
   console.log(`Servidor: http://localhost:${ PORT }`); 
