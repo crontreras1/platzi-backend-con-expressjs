@@ -6,10 +6,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 // const bodyParser = require('body-parser');
 
-const loggerMiddleware = require('./middlewares/logger'); 
-const errorHandler = require('./middlewares/errorHandler');
-const { validateUser } = require('./utils/validation');
-const authenticateToken = require('./middlewares/auth');
+const loggerMiddleware = require('./src/middlewares/logger'); 
+const errorHandler = require('./src/middlewares/errorHandler');
+const { validateUser } = require('./src/utils/validation');
+const authenticateToken = require('./src/middlewares/auth');
 
 const fs = require('fs');
 const path = require('path');
@@ -200,7 +200,7 @@ app.post('/login', async (req, res) => {
   const { email, password } = req.body;
   
   const user = await prisma.user.findUnique({ where: { email } });
-  if (!user) return res.status(400).json({ error: 'Email o contraseñas invalido' });
+  if (!user) return res.status(400).json({ error: 'Email o contraseña invalido' });
   
   const validPassword = await bcrypt.compare(password, user.password);
   if (!validPassword) return res.status(400).json({ error: 'Email o contraseña invalidad' });
