@@ -1,8 +1,8 @@
-const { listReservationService } = require("../services/adminService")
+const reservationService = require("../services/reservationService")
 
 exports.createReservation = async (req, res) => {
   try {
-    const reservataion = await listReservationService.createReservation(req.body);
+    const reservataion = await reservationService.createReservation(req.body);
     res.status(201).json(reservataion);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -11,7 +11,7 @@ exports.createReservation = async (req, res) => {
 
 exports.getReservation = async (req, res) => {
   try {
-    const reservataion = await listReservationService.getReservation(req.params.id);
+    const reservataion = await reservationService.getReservation(req.params.id);
     if (!reservataion) {
       res.status(404).json({ error: 'Reservación no encontrada' });
     };
@@ -22,3 +22,29 @@ exports.getReservation = async (req, res) => {
   };
 };
 
+exports.updateReservation = async (req, res) => {
+  try {
+    const reservation = await reservationService.updateReservation(
+      req.params.id,
+      req.body
+    );
+    if (!reservation) {
+      return res.status(404).json({ error: 'Reservation not found' });
+    }
+    res.json(reservation);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.deleteReservation = async (req, res) => {
+  try {
+    const result = await reservationService.deleteReservation(req.params.id);
+    if (!result) {
+      return res.status(404).json({ error: 'Reservation not found' });
+    }
+    res.status(204).send();
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
